@@ -1,7 +1,8 @@
+from decimal import Decimal
 import os
 
 import numpy as np
-from decimal import Decimal
+
 
 class Reporter:
     def __init__(self, abcList):
@@ -12,7 +13,7 @@ class Reporter:
         if (abcList[0].conf.RUN_INFO):
             self.run_info()
         if (abcList[0].conf.SAVE_RESULTS):
-             self.save_results()
+            self.save_results()
         if (abcList[0].conf.RUN_INFO_COMMANDLINE):
             self.command_line_print()
 
@@ -26,7 +27,8 @@ class Reporter:
     def run_info(self):
         summ = []
         for i in range(self.abcList[0].conf.RUN_TIME):
-            print(self.abcList[i].experimentID + " run: ", self.abcList[i].globalOpt, " Cycle: ",
+            print(self.abcList[i].experimentID + " run: ",
+                  self.abcList[i].globalOpt, " Cycle: ",
                   self.abcList[i].cycle, " Time: ",
                   self.abcList[i].globalTime)
             summ.append(self.abcList[i].globalOpt)
@@ -70,26 +72,28 @@ class Reporter:
                     header = header + "param" + str(j) + ";"
                 else:
                     header = header + "param" + str(j) + "\n"
+
             with open(self.abcList[0].conf.OUTPUTS_FOLDER_NAME + "/" + self.abcList[0].conf.PARAMETER_REPORT_FILE_NAME,
                       'a') as saveRes:
-                if (sum(1 for _ in open(self.abcList[0].conf.OUTPUTS_FOLDER_NAME + "/" + self.abcList[
-                    0].conf.PARAMETER_REPORT_FILE_NAME)) < 1):
+                if (sum(1 for _ in open(self.abcList[0].conf.OUTPUTS_FOLDER_NAME +
+                                        "/" + self.abcList[0].conf.PARAMETER_REPORT_FILE_NAME)) < 1):
                     saveRes.write(header)
 
                 for i in range(self.abcList[0].conf.RUN_TIME):
-                    csvText=str(self.abcList[i].experimentID)+";"
+                    csvText = str(self.abcList[i].experimentID) + ";"
                     for j in range(self.abcList[0].conf.DIMENSION):
                         if(j<self.abcList[0].conf.DIMENSION-1):
-                            csvText = csvText+str(self.abcList[i].globalParams[j])+";"
+                            csvText = csvText + str(self.abcList[i].globalParams[j]) + ";"
                         else:
                             csvText = csvText + str(self.abcList[i].globalParams[j]) + "\n"
                     saveRes.write(csvText)
 
             for i in range(self.abcList[0].conf.RUN_TIME):
-                if not os.path.exists(self.abcList[i].conf.OUTPUTS_FOLDER_NAME+"/"+self.abcList[i].conf.RESULT_BY_CYCLE_FOLDER):
-                    os.makedirs(self.abcList[i].conf.OUTPUTS_FOLDER_NAME+"/"+self.abcList[i].conf.RESULT_BY_CYCLE_FOLDER)
-                with open(self.abcList[i].conf.OUTPUTS_FOLDER_NAME+"/"+self.abcList[i].conf.RESULT_BY_CYCLE_FOLDER+"/"+self.abcList[i].experimentID+".txt",
-                          'a') as saveRes:
+                if not os.path.exists(self.abcList[i].conf.OUTPUTS_FOLDER_NAME + "/" + self.abcList[i].conf.RESULT_BY_CYCLE_FOLDER):
+                    os.makedirs(self.abcList[i].conf.OUTPUTS_FOLDER_NAME + "/" + self.abcList[i].conf.RESULT_BY_CYCLE_FOLDER)
+
+                with open(self.abcList[i].conf.OUTPUTS_FOLDER_NAME + "/" + self.abcList[i].conf.RESULT_BY_CYCLE_FOLDER +
+                          "/" + self.abcList[i].experimentID + ".txt", 'a') as saveRes:
 
                     for j in range(self.abcList[i].cycle):
-                        saveRes.write(str(self.abcList[i].globalOpts[j])+"\n")
+                        saveRes.write(str(self.abcList[i].globalOpts[j]) + "\n")

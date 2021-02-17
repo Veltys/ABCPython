@@ -1,9 +1,12 @@
 __author__ = "Omur Sahin"
 
 import sys
-import numpy as np
-from deap.benchmarks import *
+
+from deap.benchmarks import random
 import progressbar
+
+import numpy as np
+
 
 class ABC:
 
@@ -31,6 +34,7 @@ class ABC:
         try:
             if (self.conf.SHOW_PROGRESS):
                 self.progressbar.update(self.evalCount)
+
             return self.conf.OBJECTIVE_FUNCTION(sol)
 
         except ValueError as err:
