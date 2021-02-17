@@ -1,8 +1,10 @@
 import configparser
+import ctypes
 import os
 import sys, getopt
 
 from deap.benchmarks import sphere, rastrigin, rosenbrock, rand, plane, cigar, h1, ackley, bohachevsky, griewank, rastrigin_scaled, rastrigin_skew, schaffer, schwefel, himmelblau
+import numpy
 
 
 class Config:
@@ -92,7 +94,13 @@ class Config:
             #####SETTINGS ARGUMENTS######
 
     def user_defined_function(individual): # @NoSelf
-        return (individual[0] - individual[1]),
+        libtest = ctypes.CDLL('C:\\Users\\Rafa\\Eclipse\\TFG\\test\\Debug\\libtest.dll')
+        libtest.user_defined_function.argtypes = (ctypes.c_int, ctypes.POINTER(ctypes.c_double),)
+        libtest.user_defined_function.restype = ctypes.c_double
+
+        return libtest.user_defined_function(len(individual), individual.astype(numpy.double).ctypes.data_as(ctypes.POINTER(ctypes.c_double))),
+
+        # return (individual[0] - individual[1]),
 
     #######FUNCTION_LIST######
     objFunctionSelector = {
