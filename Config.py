@@ -102,7 +102,7 @@ class Config:
 
         # return libtest.cec20_bench(len(individual), 1, individual.astype(numpy.double).ctypes.data_as(ctypes.POINTER(ctypes.c_double))),
 
-        libtest.cec20_bench(individual.size, 1, individual),
+        libtest.cec20_bench(individual.size, 2, individual),
 
         return (individual[0] - individual[1]),
 
