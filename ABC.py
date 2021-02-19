@@ -26,7 +26,7 @@ class ABC:
         self.globalOpts = list()
 
         if (self.conf.SHOW_PROGRESS):
-            self.progressbar = progressbar.ProgressBar(max_value=self.conf.MAXIMUM_EVALUATION)
+            self.progressbar = progressbar.ProgressBar(max_value = self.conf.MAXIMUM_EVALUATION)
         if (not(conf.RANDOM_SEED)):
             random.seed(conf.SEED)
 
@@ -163,5 +163,6 @@ class ABC:
     def increase_cycle(self):
         self.globalOpts.append(self.globalOpt)
         self.cycle += 1
+
     def setExperimentID(self,run,t):
         self.experimentID = t+"-"+str(run)
