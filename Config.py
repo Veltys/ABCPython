@@ -96,10 +96,10 @@ class Config:
 
     def user_defined_function(individual): # @NoSelf
         libtest = ctypes.CDLL('..' + os.sep + '2020-Bound-Constrained-Opt-Benchmark' + os.sep + 'Debug' + os.sep + 'libbenchmark.' + ('dll' if os.name == 'nt' else 'so'))
-        libtest.cec20_bench.argtypes = (ctypes.c_size_t, ctypes.c_size_t, numpy.ctypeslib.ndpointer(dtype = numpy.float64, ndim = 1, flags = "C"))
+        libtest.cec20_bench.argtypes = (ctypes.c_size_t, ctypes.c_size_t, ctypes.POINTER(ctypes.c_double * len(individual)))
         libtest.cec20_bench.restype = ctypes.c_double
 
-        return libtest.cec20_bench(1, individual.size, individual),
+        return libtest.cec20_bench(1, individual.size, (ctypes.c_double * len(individual))(*individual)),
 
         # return (individual[0] - individual[1]),
 
