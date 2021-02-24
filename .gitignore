@@ -201,3 +201,5 @@ local.properties
 .project
 
 input_data
+libbenchmark.dll
+libbenchmark.so
