@@ -4,7 +4,6 @@ import os
 import sys, getopt
 
 from deap.benchmarks import sphere, rastrigin, rosenbrock, rand, plane, cigar, h1, ackley, bohachevsky, griewank, rastrigin_scaled, rastrigin_skew, schaffer, schwefel, himmelblau
-import numpy
 
 
 class Config:
