@@ -11,8 +11,8 @@ else {
 	$funciones		= @($args[0], $args[1], 1)
 
 	if(
-		($args[2] -eq "" -or !($args[1] -match '^\d+$') -or $args[2] -lt 10) -or
-		($args[3] -eq "" -or !($args[3] -match '^\d+$') -or $args[3] -lt 10)
+		($args[2] -eq "" -or !($args[1] -match '^\d+$') -or $args[2] -lt 5) -or
+		($args[3] -eq "" -or !($args[3] -match '^\d+$') -or $args[3] -lt 5)
 	) {
 		$dimensiones	= @(10, 20, 5)
 	}
