@@ -19,13 +19,13 @@ else
 	fi
 fi
 
-for (( i=${funciones[0]}; i<=${funciones[1]}; i++ )); do
-	echo $i > func_num.txt
+for (( i=funciones[0]; i<=funciones[1]; i++ )); do
+	echo "$i" > func_num.txt
 
-	for (( j=${dimensiones[0]}; j<=${dimensiones[1]}; j=$j+5 )); do
+	for (( j=dimensiones[0]; j<=dimensiones[1]; j=j+5 )); do
 		echo "Función $i, dimensión $j"
 
-		./ABCAlgorithm.py -d $j
+		./ABCAlgorithm.py -d "$j"
 	done
 done
 
