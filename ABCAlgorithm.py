@@ -12,7 +12,6 @@ from Reporter import Reporter
 
 
 def main(argv):
-
     abcConf = Config.Config(argv)
     abcList = list()
     expT = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S").replace(" ","").replace(":","")

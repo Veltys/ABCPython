@@ -9,7 +9,7 @@ class Config:
 
     def __init__(self, argv):
             config = configparser.ConfigParser()
-            config.read(os.path.dirname(os.path.abspath(__file__))+'/ABC.ini')
+            config.read(os.path.dirname(os.path.abspath(__file__)) + '/ABC.ini')
             #####SETTINGS FILE######
             self.OBJECTIVE_FUNCTION = self.objFunctionSelector.get(config['DEFAULT']['ObjectiveFunction'], "Error")
             self.NUMBER_OF_POPULATION = int(config['DEFAULT']['NumberOfPopulation'])
