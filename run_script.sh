@@ -20,13 +20,9 @@ else
 fi
 
 for (( i=funciones[0]; i<=funciones[1]; i++ )); do
-	echo "$i" > func_num.txt
-
 	for (( j=dimensiones[0]; j<=dimensiones[1]; j=j+5 )); do
 		echo "Función $i, dimensión $j"
 
-		./ABCAlgorithm.py -d "$j"
+		./ABCAlgorithm.py -d "$j" -o "external_benchmark_$i"
 	done
 done
-
-rm func_num.txt

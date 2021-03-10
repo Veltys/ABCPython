@@ -22,13 +22,9 @@ else {
 }
 
 for($i = $funciones[0]; $i -le $funciones[1]; $i += $funciones[2]) {
-	Out-File -FilePath .\func_num.txt -InputObject $i -Encoding ASCII
-
 	for($j = $dimensiones[0]; $j -le $dimensiones[1]; $j += $dimensiones[2]) {
 		Write-Output "Función $i, dimensión $j"
 
-		.\ABCAlgorithm.py -d $j
+		.\ABCAlgorithm.py -d $j -o external_benchmark_$i
 	}
 }
-
-Remove-Item func_num.txt
