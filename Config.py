@@ -6,7 +6,6 @@ from deap.benchmarks import sphere, rastrigin, rosenbrock, rand, plane, cigar, h
 
 
 class Config:
-
     def __init__(self, argv):
             config = configparser.ConfigParser()
             config.read(os.path.dirname(os.path.abspath(__file__)) + '/ABC.ini')
@@ -90,6 +89,7 @@ class Config:
                         print(i)
                     sys.exit()
             #####SETTINGS ARGUMENTS######
+
 
     def user_defined_function(individual): # @NoSelf
         return (individual[0] - individual[1]),
