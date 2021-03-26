@@ -1,6 +1,8 @@
 #!/usr/bin/env pwsh
 
 # Preprocesamiento: variables
+$alg = 'ABC'
+
 if(
 	$args.Length -lt 2 -or
 	(!($args[0] -match '^\d+$') -or $args[0] -lt 1) -or
@@ -24,74 +26,74 @@ else {
 	}
 }
 
-# Procesamiento condicional a la no existencia del parámetro -r
-if(
-	!(
-		$args[0] -eq '-r' -or
-		($args.Length -eq 5 -and $args[4] -eq '-r')
-	)
-) {
-	# Procesamiento: ejecución del programa
-	for($i = $funciones[0]; $i -le $funciones[1]; $i += $funciones[2]) {
-		for($j = $dimensiones[0]; $j -le $dimensiones[1]; $j += $dimensiones[2]) {
+for($i = $funciones[0]; $i -le $funciones[1]; $i += $funciones[2]) {
+	for($j = $dimensiones[0]; $j -le $dimensiones[1]; $j += $dimensiones[2]) {
+		# Procesamiento condicional a la no existencia del parámetro -r
+		if(
+			!(
+				$args[0] -eq '-r' -or
+				($args.Length -eq 5 -and $args[4] -eq '-r')
+			)
+		) {
+			# Procesamiento: ejecución del programa
 			Write-Output "Función $i, dimensión $j"
 
 			.\ABCAlgorithm.py -d $j -o external_benchmark_$i
 		}
-	}
-}
 
-# Posprocesamiento: recopilación de resultados
-# Recogida de todos los archivos de salida
-$archivos = Get-ChildItem -Path .\Outputs\ResultByCycle -Filter *.txt
+		# Posprocesamiento: recopilación de resultados
+		# Recogida de todos los archivos de salida
+		$archivos = Get-ChildItem -Path .\Outputs\ResultByCycle -Filter *.txt
 
-# Iteración de todas las dimensiones
-for($i = $dimensiones[0]; $i -le $dimensiones[1]; $i += $dimensiones[2]) {
-	# Preparación de la matriz de resultados
-	[System.Collections.ArrayList]$res = @()
-
-	for($j = 0; $j -lt 16; $j++) {
-		$null = $res.Add(@(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0))
-	}
-
-	# Desplazamiento dimensional
-	$offset = ($i - $dimensiones[0]) / $dimensiones[2]
-
-
-	for($j = 0; $j -lt 30; $j++) {
-		# Coordenada de insercción en la matriz de resultados calculada debido al previsible mal ordenamiento de los archivos
-        $l = $archivos[$j].Name.Split('.')[0].Split('-')[-1]
+		# Preparación de la matriz de resultados
+		[System.Collections.ArrayList]$res = @()
 
 		for($k = 0; $k -lt 16; $k++) {
-			# Número de línea a leer
-			$numLinea = [Math]::Round([Math]::Pow($i, $k / 5 - 3) * 150000)
-
-            $linea = Get-Content $archivos[$offset + $j].FullName | Select -Index ($numLinea - 1)
-
-			# Algunas líneas podrían no existir, debido a los criterios de parada
-            if($linea -match '^[-]?[0-9]+\.?[0-9]*$') {
-				$res[$k][$l] = $linea
-			}
-			else {
-				# En tal caso, se copia el resultado de la línea anterior
-				$res[$k][$l] = $res[$k - 1][$l]
-			}
+			$null = $res.Add(@(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0))
 		}
-	}
 
-	$out = '';
-
-	for($j = 0; $j -lt 16; $j++) {
 		for($k = 0; $k -lt 30; $k++) {
-			$out += $res[$j][$k]
+			# Coordenada de insercción en la matriz de resultados calculada debido al previsible mal ordenamiento de los archivos
+		    $m = $archivos[$k].Name.Split('.')[0].Split('-')[-1]
 
-			 if($k -ne 29) {
-			 	$out += ','
-		 	}
+			for($l = 0; $l -lt 16; $l++) {
+				# Número de línea a leer
+				$numLinea = [Math]::Round([Math]::Pow($j, $l / 5 - 3) * 150000)
+
+		        $linea = Get-Content $archivos[$k].FullName | Select -Index ($numLinea - 1)
+
+				# Algunas líneas podrían no existir, debido a los criterios de parada
+		        if($linea -match '^[-]?[0-9]+\.?[0-9]*$') {
+					$res[$l][$m] = $linea
+				}
+				else {
+					# En tal caso, se copia el resultado de la línea anterior
+					$res[$l][$m] = $res[$l - 1][$m]
+				}
+			}
 		}
 
-		$out += [Environment]::NewLine
-	}
+		$out = '';
 
-	$out | Out-File "t1_d$i.csv"
+		if(Test-Path -Path "${alg}_${i}_${j}.txt" -PathType Leaf) {
+			Clear-Content "${alg}_${i}_${j}.txt"
+		}
+
+		for($k = 0; $k -lt 16; $k++) {
+			for($l = 0; $l -lt 30; $l++) {
+				$out += $res[$k][$l]
+
+				 if($l -ne 29) {
+				 	$out += ','
+			 	}
+			}
+
+			$out += [Environment]::NewLine
+		}
+
+		$out | Out-File "${alg}_${i}_${j}.txt"
+
+		# Borrado de resultados ya no necesarios
+		Remove-Item .\Outputs -Recurse -Confirm:$false
+	}
 }
