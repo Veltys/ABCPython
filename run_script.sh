@@ -58,7 +58,7 @@ for (( i=funciones[0]; i<=funciones[1]; i++ )); do
 				# Número de línea a leer
 				numLinea=$(awk "BEGIN {print int($j ^ ($l / 5 - 3) * 150000)}")
 
-				linea=$(sed "$((numLinea - 1))q;d" ./Outputs/ResultByCycle/"${archivos[$k]}")
+				linea=$(sed -n "$((numLinea - 1)) p" "./Outputs/ResultByCycle/${archivos[$k]}")
 
 				# Algunas líneas podrían no existir, debido a los criterios de parada
 				if ! [[ -z "$linea" ]]; then
