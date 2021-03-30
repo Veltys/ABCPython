@@ -73,20 +73,20 @@ for (( i=funciones[0]; i<=funciones[1]; i++ )); do
 			done
 		done
 
-		if [ -f "$alg_$i_$j.txt" ]; then
-			truncate -s0 "$alg_$i_$j.txt"
+		if [ -f "${alg}_${i}_${j}.txt" ]; then
+			truncate -s0 "${alg}_${i}_${j}.txt"
 		fi
 
 		for (( k=0; k<16; k++ )); do
 			for (( l=0; l<30; l++ )); do
-				echo -n "${res[$k,$l]}" >> "$alg_$i_$j.txt"
+				echo -n "${res[$k,$l]}" >> "${alg}_${i}_${j}.txt"
 
 				if [ "$l" -ne 29 ]; then
-					echo -n ',' >> "$alg_$i_$j.txt"
+					echo -n ',' >> "${alg}_${i}_${j}.txt"
 				fi
 			done
 
-			echo >> "$alg_$i_$j.txt"
+			echo >> "${alg}_${i}_${j}.txt"
 
 			# Borrado de resultados ya no necesarios
 			rm -r ./Outputs
