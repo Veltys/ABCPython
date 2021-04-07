@@ -15,11 +15,13 @@ import ABCAlgorithm
 
 def guardar(alg, funcion, dimensiones, res):
     try:
-        out = open(alg + '_' + str(funcion) + '_' + str(dimensiones) + '.txt', 'w')
+        fileName = f'{alg}_{funcion}_{dimensiones}.txt'
+
+        out = open(fileName, 'w')
 
     except IOError:
-        print('Error de apertura del archivo <' + alg + '_' + str(funcion) + '_' + str(dimensiones) + '.txt>')
-        print('ERROR: imposible abrir el archivo <' + alg + '_' + str(funcion) + '_' + str(dimensiones) + '.txt>', file = sys.stderr)
+        print(f"Error de apertura del archivo <{fileName}>")
+        print(f"ERROR: imposible abrir el archivo <{fileName}>", file = sys.stderr)
 
         exit(os.EX_OSFILE) # @UndefinedVariable
 
@@ -60,7 +62,7 @@ def preprocesar(argv):
 
 def posprocesar(dimensiones):
     # Recogida de todos los archivos de salida
-    archivos = [ name for name in os.listdir('.' + os.sep + 'Outputs' + os.sep + 'ResultByCycle') ]
+    archivos = [ name for name in os.listdir(f".{os.sep}Outputs{os.sep}ResultByCycle") ]
 
     # Preparación de la matriz de resultados
     res = numpy.zeros((16, 30))
@@ -73,7 +75,7 @@ def posprocesar(dimensiones):
             # Número de línea a leer
             numLinea = int(round((dimensiones ** (j / 5 - 3)) * 150000, 0))
 
-            elemento = linecache.getline('.' + os.sep + 'Outputs' + os.sep + 'ResultByCycle' + os.sep + archivos[i], numLinea)
+            elemento = linecache.getline(f".{os.sep}Outputs{os.sep}ResultByCycle{os.sep}{archivos[i]}", numLinea)
 
             # Algunas líneas podrían no existir, debido a los criterios de parada
             if elemento != '':
@@ -104,12 +106,13 @@ def main(argv):
                     (len(argv) == 5 and argv[4] == '-r') \
                 ):
                 # Procesamiento: ejecución del programa
-                print('Función ' + str(i + funciones[2]) + ' dimensión ' + str(j + dimensiones[2]))
+                print(f"Función {i + funciones[2]}, dimensión {j + dimensiones[2]}")
 
                 ABCAlgorithm.main(['-d', str(j + dimensiones[2]), '-o', 'external_benchmark_' + str(i + funciones[2])])
 
             # Posprocesamiento: recopilación de resultados
             guardar(alg, i + funciones[2], j + dimensiones[2], posprocesar(j + dimensiones[2]))
+
 
 if __name__ == '__main__':
     main(sys.argv[1:])
