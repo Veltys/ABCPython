@@ -20,7 +20,7 @@ class Reporter:
 
     def print_parameters(self):
         for i in range(self.abcList[0].conf.RUN_TIME):
-            print(self.abcList[i].experimentID,". run")
+            print(self.abcList[i].experimentID, ". run")
             for j in range(self.abcList[0].conf.DIMENSION):
                 print("Global Param[", j + 1, "] ", self.abcList[i].globalParams[j])
 
