@@ -9,7 +9,6 @@ import numpy as np
 
 
 class ABC:
-
     def __init__(self, conf):
         self.conf = conf
         self.foods = np.zeros((self.conf.FOOD_NUMBER, self.conf.DIMENSION))
@@ -30,6 +29,7 @@ class ABC:
         if (not(conf.RANDOM_SEED)):
             random.seed(conf.SEED)
 
+
     def calculate_function(self, sol):
         try:
             if (self.conf.SHOW_PROGRESS):
@@ -42,6 +42,7 @@ class ABC:
                 "An exception occured: Upper and Lower Bounds might be wrong. (" + str(err) + " in calculate_function)")
             sys.exit()
 
+
     def calculate_fitness(self, fun):
         self.increase_eval()
         if fun >= 0:
@@ -50,8 +51,10 @@ class ABC:
             result = 1 + abs(fun)
         return result
 
+
     def increase_eval(self):
         self.evalCount += 1
+
 
     def stopping_condition(self):
         status = bool(self.evalCount >= self.conf.MAXIMUM_EVALUATION)
@@ -60,11 +63,13 @@ class ABC:
                 self.progressbar.finish()
         return status
 
+
     def memorize_best_source(self):
         for i in range(self.conf.FOOD_NUMBER):
             if (self.f[i] < self.globalOpt and self.conf.MINIMIZE == True) or (self.f[i] >= self.globalOpt and self.conf.MINIMIZE == False):
                 self.globalOpt = np.copy(self.f[i])
                 self.globalParams = np.copy(self.foods[i][:])
+
 
     def init(self, index):
         if (not (self.stopping_condition())):
@@ -75,11 +80,13 @@ class ABC:
             self.fitness[index] = self.calculate_fitness(self.f[index])
             self.trial[index] = 0
 
+
     def initial(self):
         for i in range(self.conf.FOOD_NUMBER):
             self.init(i)
         self.globalOpt = np.copy(self.f[0])
         self.globalParams = np.copy(self.foods[0][:])
+
 
     def send_employed_bees(self):
         i = 0
@@ -114,10 +121,12 @@ class ABC:
                 self.trial[i] = self.trial[i] + 1
             i += 1
 
+
     def calculate_probabilities(self):
         maxfit = np.copy(max(self.fitness))
         for i in range(self.conf.FOOD_NUMBER):
             self.prob[i] = (0.9 * (self.fitness[i] / maxfit)) + 0.1
+
 
     def send_onlooker_bees(self):
         i = 0
@@ -156,13 +165,16 @@ class ABC:
             i += 1
             i = i % self.conf.FOOD_NUMBER
 
+
     def send_scout_bees(self):
         if np.amax(self.trial) >= self.conf.LIMIT:
             self.init(self.trial.argmax(axis = 0))
 
+
     def increase_cycle(self):
         self.globalOpts.append(self.globalOpt)
         self.cycle += 1
+
 
     def setExperimentID(self,run,t):
         self.experimentID = t + "-" + str(run)
