@@ -14,11 +14,11 @@ from Reporter import Reporter
 def main(argv):
     abcConf = Config.Config(argv)
     abcList = list()
-    expT = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S").replace(" ","").replace(":","")
+    expT = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S").replace(" ", "").replace(":", "")
     for run in range(abcConf.RUN_TIME):
 
         abc = ABC.ABC(abcConf)
-        abc.setExperimentID(run,expT)
+        abc.setExperimentID(run, expT)
         start_time = time.time() * 1000
         abc.initial()
         abc.memorize_best_source()
