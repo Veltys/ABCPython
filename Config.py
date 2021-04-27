@@ -1,4 +1,5 @@
 import configparser
+from copy import copy
 import ctypes
 import os
 import sys, getopt
@@ -98,72 +99,62 @@ class Config:
 
 
     @staticmethod
-    def linker(individual):
+    def external_benchmark(individual, benchmark_id):
         libtest = ctypes.CDLL(os.path.dirname(os.path.abspath(__file__)) + os.sep + 'libbenchmark.' + ('dll' if os.name == 'nt' else 'so'))
         libtest.cec20_bench.argtypes = (ctypes.c_size_t, ctypes.c_size_t, ctypes.POINTER(ctypes.c_double * len(individual)), ctypes.c_ushort)
-        libtest.cec20_bench.restype = ctypes.c_double
+        libtest.cec20_bench.restype = ctypes.c_void_p
+        libtest.free_array.argtypes = (ctypes.c_void_p,)
+        libtest.free_array.restype = None
 
-        return libtest
+        arr = libtest.cec20_bench(1, individual.size, (ctypes.c_double * len(individual))(*individual), benchmark_id)
+
+        res = ctypes.cast(arr, ctypes.POINTER(ctypes.c_double * 1))
+
+        res = copy(res[0][0])
+
+        libtest.free_array(arr)
+
+        return res,
 
 
     def external_benchmark_1(individual): # @NoSelf
-        libtest = Config.linker(individual)
-
-        return libtest.cec20_bench(1, individual.size, (ctypes.c_double * len(individual))(*individual), 1),
+        return Config.external_benchmark(individual, 1)
 
 
     def external_benchmark_2(individual): # @NoSelf
-        libtest = Config.linker(individual)
-
-        return libtest.cec20_bench(1, individual.size, (ctypes.c_double * len(individual))(*individual), 2),
+        return Config.external_benchmark(individual, 2)
 
 
     def external_benchmark_3(individual): # @NoSelf
-        libtest = Config.linker(individual)
-
-        return libtest.cec20_bench(1, individual.size, (ctypes.c_double * len(individual))(*individual), 3),
+        return Config.external_benchmark(individual, 3)
 
 
     def external_benchmark_4(individual): # @NoSelf
-        libtest = Config.linker(individual)
-
-        return libtest.cec20_bench(1, individual.size, (ctypes.c_double * len(individual))(*individual), 4),
+        return Config.external_benchmark(individual, 4)
 
 
     def external_benchmark_5(individual): # @NoSelf
-        libtest = Config.linker(individual)
-
-        return libtest.cec20_bench(1, individual.size, (ctypes.c_double * len(individual))(*individual), 5),
+        return Config.external_benchmark(individual, 5)
 
 
     def external_benchmark_6(individual): # @NoSelf
-        libtest = Config.linker(individual)
-
-        return libtest.cec20_bench(1, individual.size, (ctypes.c_double * len(individual))(*individual), 6),
+        return Config.external_benchmark(individual, 6)
 
 
     def external_benchmark_7(individual): # @NoSelf
-        libtest = Config.linker(individual)
-
-        return libtest.cec20_bench(1, individual.size, (ctypes.c_double * len(individual))(*individual), 7),
+        return Config.external_benchmark(individual, 7)
 
 
     def external_benchmark_8(individual): # @NoSelf
-        libtest = Config.linker(individual)
-
-        return libtest.cec20_bench(1, individual.size, (ctypes.c_double * len(individual))(*individual), 8),
+        return Config.external_benchmark(individual, 8)
 
 
     def external_benchmark_9(individual): # @NoSelf
-        libtest = Config.linker(individual)
-
-        return libtest.cec20_bench(1, individual.size, (ctypes.c_double * len(individual))(*individual), 9),
+        return Config.external_benchmark(individual, 9)
 
 
     def external_benchmark_10(individual): # @NoSelf
-        libtest = Config.linker(individual)
-
-        return libtest.cec20_bench(1, individual.size, (ctypes.c_double * len(individual))(*individual), 10),
+        return Config.external_benchmark(individual, 10)
 
 
     #######FUNCTION_LIST######
