@@ -2,9 +2,18 @@
 # -*- coding: utf-8 -*-
 
 
+# Title         : run_script.py
+# Description   : Runner for this algorithm
+# Author        : Veltys
+# Date          : 2021-04-28
+# Version       : 1.0.0
+# Usage         : python3 run_script.py
+# Notes         : Use flag -h to see optional commands and help
+
+
+import argparse
 import linecache
 import os
-import re
 from shutil import rmtree
 import sys
 
@@ -13,10 +22,26 @@ import numpy
 import ABCAlgorithm
 
 
-def guardar(alg, funcion, dimensiones, res):
-    try:
-        fileName = f'{alg}_{funcion}_{dimensiones}.txt'
+def parseClArgs(argv):
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-fMin', type = int, default = 1, dest = 'fMin', choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], help = 'minimum function id for benchmark 2020, default: 1')
+    parser.add_argument('-fMax', type = int, default = 10, dest = 'fMax', choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], help = 'maximum function id for benchmark 2020, default: 10; note: it has to be greater or equal to fMin')
+    parser.add_argument('-fStep', type = int, default = 1, dest = 'fStep', choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], help = 'function id step for benchmark 2020, default: 1')
+    parser.add_argument('-dMin', type = int, default = 10, dest = 'dMin', choices = [10, 15, 20], help = 'minimum dimension, default: 10')
+    parser.add_argument('-dMax', type = int, default = 20, dest = 'dMax', choices = [10, 15, 20], help = 'maximum dimension, default: 20; note: it has to be greater or equal to dMin')
+    parser.add_argument('-dStep', type = int, default = 5, dest = 'dStep', choices = [10, 15, 20], help = 'dimension step, default: 5')
+    parser.add_argument('-e', '--execute', type = bool, default = True, dest = 'execute', help = 'make execution phase; default True')
+    parser.add_argument('-p', '--postprocessing', type = bool, default = True, dest = 'postprocessing', help = 'make postprocessing phase; default True')
 
+    args = parser.parse_args(argv)
+
+    return args
+
+
+def guardar(alg, funcion, dimensiones, res):
+    fileName = f'{alg}_{funcion}_{dimensiones}.txt'
+
+    try:
         out = open(fileName, 'w')
 
     except IOError:
@@ -37,27 +62,6 @@ def guardar(alg, funcion, dimensiones, res):
             out.write("\n")
 
         out.close()
-
-
-def preprocesar(argv):
-    if \
-        len(argv) < 2 or \
-        (not(re.match(r"[0-9]+", argv[0])) or int(argv[0]) < 1) or \
-        (not(re.match(r"[0-9]+", argv[1])) or int(argv[1]) < 1):
-        funciones = [ 1, 10, 1]
-        dimensiones = [10, 20, 5]
-    else:
-        funciones = [int(argv[0]), int(argv[1]), 1]
-
-        if \
-            len(argv) < 4 or \
-            (not(re.match(r"[0-9]+", argv[2])) or int(argv[2]) < 5) or \
-            (not(re.match(r"[0-9]+", argv[3])) or int(argv[3]) < 5):
-            dimensiones = [10, 20, 5]
-        else:
-            dimensiones = [int(argv[2]), int(argv[3]), 5]
-
-    return (funciones, dimensiones)
 
 
 def posprocesar(dimensiones):
@@ -94,24 +98,19 @@ def main(argv):
 
     alg = 'ABC'
 
-    (funciones, dimensiones) = preprocesar(argv)
+    args = parseClArgs(argv)
 
-    for i in range(funciones[0] - funciones[2], funciones[1], funciones[2]):
-        for j in range(dimensiones[0] - dimensiones[2], dimensiones[1], dimensiones[2]):
-            # Procesamiento condicional a la no existencia del parámetro -r
-
-            if \
-                not(\
-                    (len(argv) == 1 and argv[0] == '-r') or \
-                    (len(argv) == 5 and argv[4] == '-r') \
-                ):
+    for i in range(args.fMin - args.fStep, args.fMax, args.fStep):
+        for j in range(args.dMin - args.dStep, args.dMax, args.dStep):
+            if(args.execute):
                 # Procesamiento: ejecución del programa
-                print(f"Función {i + funciones[2]}, dimensión {j + dimensiones[2]}")
+                print(f'Función {i + args.fStep}, dimensión {j + args.dStep}')
 
-                ABCAlgorithm.main(['-d', str(j + dimensiones[2]), '-o', 'external_benchmark_' + str(i + funciones[2])])
+                ABCAlgorithm.main(['-d', str(j + args.dStep), '-o', 'external_benchmark_' + str(i + args.fStep)])
 
-            # Posprocesamiento: recopilación de resultados
-            guardar(alg, i + funciones[2], j + dimensiones[2], posprocesar(j + dimensiones[2]))
+            if(args.postprocessing):
+                # Posprocesamiento: recopilación de resultados
+                guardar(alg, i + args.fStep, j + args.dStep, posprocesar(j + args.dStep))
 
 
 if __name__ == '__main__':
