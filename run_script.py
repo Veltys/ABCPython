@@ -5,8 +5,8 @@
 # Title         : run_script.py
 # Description   : Runner for this algorithm
 # Author        : Veltys
-# Date          : 2021-04-28
-# Version       : 1.0.0
+# Date          : 2021-04-29
+# Version       : 1.0.1
 # Usage         : python3 run_script.py
 # Notes         : Use flag -h to see optional commands and help
 
@@ -24,14 +24,14 @@ import ABCAlgorithm
 
 def parseClArgs(argv):
     parser = argparse.ArgumentParser()
-    parser.add_argument('-fMin', type = int, default = 1, dest = 'fMin', choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], help = 'minimum function id for benchmark 2020, default: 1')
-    parser.add_argument('-fMax', type = int, default = 10, dest = 'fMax', choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], help = 'maximum function id for benchmark 2020, default: 10; note: it has to be greater or equal to fMin')
-    parser.add_argument('-fStep', type = int, default = 1, dest = 'fStep', choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], help = 'function id step for benchmark 2020, default: 1')
-    parser.add_argument('-dMin', type = int, default = 10, dest = 'dMin', choices = [10, 15, 20], help = 'minimum dimension, default: 10')
-    parser.add_argument('-dMax', type = int, default = 20, dest = 'dMax', choices = [10, 15, 20], help = 'maximum dimension, default: 20; note: it has to be greater or equal to dMin')
-    parser.add_argument('-dStep', type = int, default = 5, dest = 'dStep', choices = [10, 15, 20], help = 'dimension step, default: 5')
-    parser.add_argument('-e', '--execute', type = bool, default = True, dest = 'execute', help = 'make execution phase; default True')
-    parser.add_argument('-p', '--postprocessing', type = bool, default = True, dest = 'postprocessing', help = 'make postprocessing phase; default True')
+    parser.add_argument('-fMin', type = int, default = 1, dest = 'fMin', choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], help = 'minimum function id for benchmark 2020 (default: 1)')
+    parser.add_argument('-fMax', type = int, default = 10, dest = 'fMax', choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], help = 'maximum function id for benchmark 2020; have to be greater or equal to fMin (default: 10)')
+    parser.add_argument('-fStep', type = int, default = 1, dest = 'fStep', choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], help = 'function id step for benchmark 2020 (default: 1)')
+    parser.add_argument('-dMin', type = int, default = 10, dest = 'dMin', choices = [10, 15, 20], help = 'minimum dimension (default: 10)')
+    parser.add_argument('-dMax', type = int, default = 20, dest = 'dMax', choices = [10, 15, 20], help = 'maximum dimension; have to be greater or equal to dMin (default: 20)')
+    parser.add_argument('-dStep', type = int, default = 5, dest = 'dStep', choices = [10, 15, 20], help = 'dimension step (default: 5)')
+    parser.add_argument('-e', '--execute', default = True, dest = 'execute', action = argparse.BooleanOptionalAction, help = 'make execution phase')
+    parser.add_argument('-p', '--postprocessing', default = True, dest = 'postprocessing', action = argparse.BooleanOptionalAction, help = 'make postprocessing phase')
 
     args = parser.parse_args(argv)
 
