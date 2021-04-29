@@ -79,14 +79,15 @@ def posprocesar(dimensiones):
             # Número de línea a leer
             numLinea = int(round((dimensiones ** (j / 5 - 3)) * 150000, 0))
 
-            elemento = linecache.getline(f".{os.sep}Outputs{os.sep}ResultByCycle{os.sep}{archivos[i]}", numLinea)
+            try: # Algunas líneas podrían no existir, debido a los criterios de parada
+                elemento = linecache.getline(f".{os.sep}Outputs{os.sep}ResultByCycle{os.sep}{archivos[i]}", numLinea)
 
-            # Algunas líneas podrían no existir, debido a los criterios de parada
-            if elemento != '':
-                res[j][k] = float(elemento)
-            else:
-                # En tal caso, se copia el resultado de la línea anterior
+            except IndexError: # En tal caso, se copia el resultado de la línea anterior
                 res[j][k] = res[j - 1][k]
+
+            else:
+                res[j][k] = elemento
+
 
     rmtree('.' + os.sep + 'Outputs')
 
