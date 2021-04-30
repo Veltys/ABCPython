@@ -6,7 +6,7 @@
 # Description   : Runner for this algorithm
 # Author        : Veltys
 # Date          : 2021-04-30
-# Version       : 1.0.2
+# Version       : 1.0.3
 # Usage         : python3 run_script.py
 # Notes         : Use flag -h to see optional commands and help
 
@@ -49,7 +49,7 @@ def guardar(alg, funcion, dimensiones, res):
         print(f"Error de apertura del archivo <{fileName}>")
         print(f"ERROR: imposible abrir el archivo <{fileName}>", file = sys.stderr)
 
-        exit(errno.ENOENT)
+        sys.exit(errno.ENOENT)
 
     else:
         for i in range(16):
