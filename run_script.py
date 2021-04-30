@@ -89,7 +89,7 @@ def posprocesar(dimensiones):
                 res[j][k] = elemento
 
 
-    rmtree('.' + os.sep + 'Outputs')
+    rmtree(f'.{os.sep}Outputs')
 
     return res
 
