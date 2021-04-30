@@ -5,13 +5,14 @@
 # Title         : run_script.py
 # Description   : Runner for this algorithm
 # Author        : Veltys
-# Date          : 2021-04-29
-# Version       : 1.0.1
+# Date          : 2021-04-30
+# Version       : 1.0.2
 # Usage         : python3 run_script.py
 # Notes         : Use flag -h to see optional commands and help
 
 
 import argparse
+import errno
 import linecache
 import os
 from shutil import rmtree
@@ -48,7 +49,7 @@ def guardar(alg, funcion, dimensiones, res):
         print(f"Error de apertura del archivo <{fileName}>")
         print(f"ERROR: imposible abrir el archivo <{fileName}>", file = sys.stderr)
 
-        exit(os.EX_OSFILE) # @UndefinedVariable
+        exit(errno.ENOENT)
 
     else:
         for i in range(16):
