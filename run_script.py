@@ -32,7 +32,7 @@ def parseClArgs(argv):
     parser.add_argument('-dMax', type = int, default = 20, dest = 'dMax', choices = [10, 15, 20], help = 'maximum dimension; have to be greater or equal to dMin (default: 20)')
     parser.add_argument('-dStep', type = int, default = 5, dest = 'dStep', choices = [10, 15, 20], help = 'dimension step (default: 5)')
 
-    if (sys.version_info[0] > 3) or (sys.version_info[0] == 3 and sys.version_info[1] >= 8): # argparse.BooleanOptionalAction was introduced on Python 3.8, but RaspOS Python is stuck on 3.7 and that's makes things a bit harder
+    if (sys.version_info[0] > 3) or (sys.version_info[0] == 3 and sys.version_info[1] >= 8): # argparse.BooleanOptionalAction was introduced on Python 3.8, but Raspberry Pi OS Python is stuck on 3.7 and that's makes things a bit harder
         parser.add_argument('-e', '--execute', default = True, dest = 'execute', action = argparse.BooleanOptionalAction, help = 'make execution phase')
         parser.add_argument('-p', '--postprocessing', default = True, dest = 'postprocessing', action = argparse.BooleanOptionalAction, help = 'make postprocessing phase')
     else:
