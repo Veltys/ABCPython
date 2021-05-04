@@ -5,8 +5,8 @@
 # Title         : run_script.py
 # Description   : Runner for this algorithm
 # Author        : Veltys
-# Date          : 2021-04-30
-# Version       : 1.0.3
+# Date          : 2021-05-04
+# Version       : 1.1.0
 # Usage         : python3 run_script.py
 # Notes         : Use flag -h to see optional commands and help
 
@@ -31,8 +31,14 @@ def parseClArgs(argv):
     parser.add_argument('-dMin', type = int, default = 10, dest = 'dMin', choices = [10, 15, 20], help = 'minimum dimension (default: 10)')
     parser.add_argument('-dMax', type = int, default = 20, dest = 'dMax', choices = [10, 15, 20], help = 'maximum dimension; have to be greater or equal to dMin (default: 20)')
     parser.add_argument('-dStep', type = int, default = 5, dest = 'dStep', choices = [10, 15, 20], help = 'dimension step (default: 5)')
-    parser.add_argument('-e', '--execute', default = True, dest = 'execute', action = argparse.BooleanOptionalAction, help = 'make execution phase')
-    parser.add_argument('-p', '--postprocessing', default = True, dest = 'postprocessing', action = argparse.BooleanOptionalAction, help = 'make postprocessing phase')
+
+    if (sys.version_info[0] > 3) or (sys.version_info[0] == 3 and sys.version_info[1] >= 8): # argparse.BooleanOptionalAction was introduced on Python 3.8, but RaspOS Python is stuck on 3.7 and that's makes things a bit harder
+        parser.add_argument('-e', '--execute', default = True, dest = 'execute', action = argparse.BooleanOptionalAction, help = 'make execution phase')
+        parser.add_argument('-p', '--postprocessing', default = True, dest = 'postprocessing', action = argparse.BooleanOptionalAction, help = 'make postprocessing phase')
+    else:
+        parser.add_argument('-e', '--execute', type = bool, default = True, dest = 'execute', help = 'make execution phase (default: True)')
+        parser.add_argument('-p', '--postprocessing', type = bool, default = True, dest = 'postprocessing', help = 'make postprocessing phase (default True)')
+
 
     args = parser.parse_args(argv)
 
