@@ -2,13 +2,16 @@
 # -*- coding: utf-8 -*-
 
 
-# Title         : run_script.py
-# Description   : Runner for this algorithm
-# Author        : Veltys
-# Date          : 2021-05-04
-# Version       : 1.1.0
-# Usage         : python3 run_script.py
-# Notes         : Use flag -h to see optional commands and help
+'''!
+    @file:           run_script.py
+    @brief:          Runner for this algorithm
+
+    @author:         Rafael Carlos Méndez Rodríguez (i82meror)
+    @date:           2021-05-04
+    @version:        1.1.0
+    @usage:          python3 run_script.py
+    @note:           Use flag -h to see optional commands and help
+'''
 
 
 import argparse
@@ -24,6 +27,13 @@ import ABCAlgorithm
 
 
 def parseClArgs(argv):
+    '''! Procesa los argumentos pasados al programa
+    
+        @param argv:    Vector de argumentos
+    
+        @return:        Argumentos procesados
+    '''
+
     parser = argparse.ArgumentParser()
     parser.add_argument('-fMin', type = int, default = 1, dest = 'fMin', choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], help = 'minimum function id for benchmark 2020 (default: 1)')
     parser.add_argument('-fMax', type = int, default = 10, dest = 'fMax', choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], help = 'maximum function id for benchmark 2020; have to be greater or equal to fMin (default: 10)')
@@ -46,6 +56,14 @@ def parseClArgs(argv):
 
 
 def guardar(alg, funcion, dimensiones, res):
+    '''! Guarda los datos ya procesados en el archivo correspondiente en formato CSV
+    
+        @param alg:            Nombre del algoritmo procesado
+        @param funcion:        Número de función procesada
+        @param dimensiones:    Número de dimensiones procesadas
+        @param res:            Resultados procesados
+    '''
+
     fileName = f'{alg}_{funcion}_{dimensiones}.txt'
 
     try:
@@ -72,6 +90,13 @@ def guardar(alg, funcion, dimensiones, res):
 
 
 def posprocesar(dimensiones):
+    '''! Lee los resultados en el formato que la metaheurística los arroja y los almacena en memoria
+    
+        @param dimensiones:    Número de dimensiones procesadas
+
+        @return:               Resultados procesados
+    '''
+
     # Recogida de todos los archivos de salida
     archivos = [ name for name in os.listdir(f".{os.sep}Outputs{os.sep}ResultByCycle") ]
 
@@ -102,6 +127,13 @@ def posprocesar(dimensiones):
 
 
 def main(argv):
+    '''! Ejecuta la metaheurística, procesa sus resultados y genera el archivo con la tabla de resultados final
+    
+        @param argv:    Argumentos del programa
+
+        @return:        Código de retorno
+    '''
+
     # Preprocesamiento: variables
 
     alg = 'ABC'
