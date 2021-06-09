@@ -104,7 +104,7 @@ def posprocesar(dimensiones):
     res = numpy.zeros((16, 30))
 
     for i in range(30):
-        # Coordenada de insercción en la matriz de resultados calculada debido al previsible mal ordenamiento de los archivos
+        # Coordenada de inserción en la matriz de resultados calculada debido al previsible mal ordenamiento de los archivos
         k = int(archivos[i].split('.')[0].split('-')[-1])
 
         for j in range(16):
