@@ -7,8 +7,8 @@
     @brief:          Runner for this algorithm
 
     @author:         Rafael Carlos Méndez Rodríguez (i82meror)
-    @date:           2021-05-04
-    @version:        1.1.0
+    @date:           2021-06-09
+    @version:        1.1.1
     @usage:          python3 run_script.py
     @note:           Use flag -h to see optional commands and help
 '''
@@ -35,12 +35,12 @@ def parseClArgs(argv):
     '''
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-fMin', type = int, default = 1, dest = 'fMin', choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], help = 'minimum function id for benchmark 2020 (default: 1)')
-    parser.add_argument('-fMax', type = int, default = 10, dest = 'fMax', choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], help = 'maximum function id for benchmark 2020; have to be greater or equal to fMin (default: 10)')
-    parser.add_argument('-fStep', type = int, default = 1, dest = 'fStep', choices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], help = 'function id step for benchmark 2020 (default: 1)')
-    parser.add_argument('-dMin', type = int, default = 10, dest = 'dMin', choices = [10, 15, 20], help = 'minimum dimension (default: 10)')
-    parser.add_argument('-dMax', type = int, default = 20, dest = 'dMax', choices = [10, 15, 20], help = 'maximum dimension; have to be greater or equal to dMin (default: 20)')
-    parser.add_argument('-dStep', type = int, default = 5, dest = 'dStep', choices = [10, 15, 20], help = 'dimension step (default: 5)')
+    parser.add_argument('-fMin', type = int, default = 1, dest = 'fMin', choices = range(1, 11), help = 'minimum function id for benchmark 2020 (default: 1)')
+    parser.add_argument('-fMax', type = int, default = 10, dest = 'fMax', choices = range(1, 11), help = 'maximum function id for benchmark 2020; have to be greater or equal to fMin (default: 10)')
+    parser.add_argument('-fStep', type = int, default = 1, dest = 'fStep', choices = range(1, 11), help = 'function id step for benchmark 2020 (default: 1)')
+    parser.add_argument('-dMin', type = int, default = 10, dest = 'dMin', choices = range(10, 21, 5), help = 'minimum dimension (default: 10)')
+    parser.add_argument('-dMax', type = int, default = 20, dest = 'dMax', choices = range(10, 21, 5), help = 'maximum dimension; have to be greater or equal to dMin (default: 20)')
+    parser.add_argument('-dStep', type = int, default = 5, dest = 'dStep', choices = range(5, 11, 5), help = 'dimension step (default: 5)')
 
     if (sys.version_info[0] > 3) or (sys.version_info[0] == 3 and sys.version_info[1] >= 8): # argparse.BooleanOptionalAction was introduced on Python 3.8, but Raspberry Pi OS Python is stuck on 3.7 and that's makes things a bit harder
         parser.add_argument('-e', '--execute', default = True, dest = 'execute', action = argparse.BooleanOptionalAction, help = 'make execution phase')
