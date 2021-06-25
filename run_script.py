@@ -7,8 +7,8 @@
     @brief:          Runner for this algorithm
 
     @author:         Rafael Carlos Méndez Rodríguez (i82meror)
-    @date:           2021-06-09
-    @version:        1.1.1
+    @date:           2021-06-25
+    @version:        1.1.2
     @usage:          python3 run_script.py
     @note:           Use flag -h to see optional commands and help
 '''
@@ -114,11 +114,16 @@ def posprocesar(dimensiones):
             try: # Algunas líneas podrían no existir, debido a los criterios de parada
                 elemento = linecache.getline(f".{os.sep}Outputs{os.sep}ResultByCycle{os.sep}{archivos[i]}", numLinea)
 
+                res[j][k] = elemento
+
             except IndexError: # En tal caso, se copia el resultado de la línea anterior
                 res[j][k] = res[j - 1][k]
 
+            except ValueError:
+                res[j][k] = res[j - 1][k]
+
             else:
-                res[j][k] = elemento
+                pass
 
 
     rmtree(f'.{os.sep}Outputs')
