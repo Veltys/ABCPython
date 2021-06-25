@@ -8,7 +8,7 @@
 
     @author:         Rafael Carlos Méndez Rodríguez (i82meror)
     @date:           2021-06-25
-    @version:        1.1.2
+    @version:        1.1.3
     @usage:          python3 run_script.py
     @note:           Use flag -h to see optional commands and help
 '''
@@ -78,10 +78,10 @@ def guardar(alg, funcion, dimensiones, res):
     else:
         for i in range(16):
             for j in range(30):
-                out.write(str(res[i][j]))
+                out.write(str(res[i][j]).replace('.',','))
 
                 if j != 29:
-                    out.write(',')
+                    out.write(';')
 
             # out.write(os.linesep)
             out.write("\n")
